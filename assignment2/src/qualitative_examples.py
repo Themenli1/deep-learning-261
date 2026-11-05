@@ -53,6 +53,13 @@ def main() -> None:
     parser.add_argument("--num-correct", type=int, default=4)
     parser.add_argument("--num-incorrect", type=int, default=4)
     parser.add_argument("--output-dir", type=str, default=None)
+    parser.add_argument("--seed", type=int, default=42, help="Shuffle seed for example selection")
+    parser.add_argument(
+        "--max-per-class",
+        type=int,
+        default=1,
+        help="Maximum examples per true class within a group (1 keeps the grid varied)",
+    )
     args = parser.parse_args()
 
     with open(args.config, "r", encoding="utf-8") as f:
@@ -72,8 +79,11 @@ def main() -> None:
         seed=config.get("seed", 42),
     )
     dataset = val_ds if args.split == "val" else test_ds
+    rng = np.random.default_rng(args.seed)
+    order = rng.permutation(len(dataset))
+    subset = torch.utils.data.Subset(dataset, order.tolist())
     loader = torch.utils.data.DataLoader(
-        dataset,
+        subset,
         batch_size=args.batch_size,
         shuffle=False,
         num_workers=args.num_workers,
@@ -87,6 +97,8 @@ def main() -> None:
 
     correct: list[tuple[np.ndarray, str, str]] = []
     incorrect: list[tuple[np.ndarray, str, str]] = []
+    seen_correct: dict[str, int] = {}
+    seen_incorrect: dict[str, int] = {}
 
     with torch.no_grad():
         for images, targets in loader:
@@ -99,10 +111,15 @@ def main() -> None:
                 pred_name = classes[int(prediction)]
                 item = (denormalize(image), true_name, pred_name)
                 if int(target) == int(prediction):
-                    if len(correct) < args.num_correct:
+                    count = seen_correct.get(true_name, 0)
+                    if len(correct) < args.num_correct and count < args.max_per_class:
                         correct.append(item)
-                elif len(incorrect) < args.num_incorrect:
-                    incorrect.append(item)
+                        seen_correct[true_name] = count + 1
+                else:
+                    count = seen_incorrect.get(true_name, 0)
+                    if len(incorrect) < args.num_incorrect and count < args.max_per_class:
+                        incorrect.append(item)
+                        seen_incorrect[true_name] = count + 1
             if len(correct) >= args.num_correct and len(incorrect) >= args.num_incorrect:
                 break
 
@@ -151,6 +168,8 @@ def main() -> None:
     summary = {
         "checkpoint": str(args.checkpoint),
         "split": args.split,
+        "seed": args.seed,
+        "max_per_class": args.max_per_class,
         "correct_examples": len(correct),
         "incorrect_examples": len(incorrect),
         "output": str(output_path),
