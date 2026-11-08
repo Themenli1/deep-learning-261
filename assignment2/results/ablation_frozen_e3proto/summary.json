@@ -1,0 +1,14 @@
+{
+  "model": "resnet50",
+  "seed": 42,
+  "device": "cuda",
+  "total_epochs": 15,
+  "best_val_macro_f1": 0.5661103697652726,
+  "total_training_time_sec": 6490.479429483414,
+  "parameters": {
+    "total": 23714981,
+    "trainable": 206949,
+    "frozen": 23508032
+  },
+  "best_checkpoint": "/content/deep-learning-261/assignment2/checkpoints/ablation_frozen_e3proto/resnet50_best.pt"
+}

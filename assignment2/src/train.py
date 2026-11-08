@@ -141,7 +141,22 @@ def save_history_plots(history: list[dict[str, Any]], output_path: Path) -> None
         val_acc = [h["val_acc"] for h in history]
         val_f1 = [h["val_macro_f1"] for h in history]
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+        # Some runs log accuracy as a fraction and others as a percentage.
+        # Normalise to percent so report figures share one scale.
+        if max(train_acc + val_acc + val_f1) <= 1.5:
+            train_acc = [v * 100.0 for v in train_acc]
+            val_acc = [v * 100.0 for v in val_acc]
+            val_f1 = [v * 100.0 for v in val_f1]
+
+        plt.rcParams.update({
+            "font.size": 9,
+            "axes.titlesize": 10,
+            "axes.labelsize": 9,
+            "xtick.labelsize": 8,
+            "ytick.labelsize": 8,
+            "legend.fontsize": 7.5,
+        })
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9.8, 3.7))
 
         ax1.plot(epochs, train_loss, label="Train Loss", marker="o")
         ax1.plot(epochs, val_loss, label="Val Loss", marker="s")
@@ -161,7 +176,7 @@ def save_history_plots(history: list[dict[str, Any]], output_path: Path) -> None
         ax2.grid(True, linestyle="--", alpha=0.5)
 
         plt.tight_layout()
-        plt.savefig(output_path, dpi=200)
+        plt.savefig(output_path, dpi=200, bbox_inches="tight")
         plt.close(fig)
     except Exception as e:
         print(f"Warning: could not generate plots ({e})")

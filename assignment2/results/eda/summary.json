@@ -1,0 +1,44 @@
+{
+  "dataset_name": "Food-101",
+  "num_classes": 101,
+  "total_images": 101000,
+  "official_splits": {
+    "train": 75750,
+    "test": 25250
+  },
+  "project_splits": {
+    "train": 68175,
+    "val": 7575,
+    "test": 25250
+  },
+  "samples_per_class": {
+    "train": 675,
+    "val": 75,
+    "test": 250,
+    "total": 1000
+  },
+  "input_resolution": "224x224 RGB",
+  "original_max_dimension": 512,
+  "normalization": {
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "super_categories": {
+    "Desserts & Pastries": 22,
+    "Meat & Poultry": 13,
+    "Asian & Regional Specialties": 15,
+    "Fast Food & Sandwiches": 17,
+    "Seafood": 12,
+    "Pasta, Noodles & Rice": 8,
+    "Salads, Vegetables & Starters": 10,
+    "Breakfast & Egg Dishes": 4
+  }
+}

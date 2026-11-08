@@ -1,0 +1,9 @@
+{
+  "checkpoint": "checkpoints/resnet50_finetune/resnet50_best.pt",
+  "split": "test",
+  "seed": 42,
+  "max_per_class": 1,
+  "correct_examples": 4,
+  "incorrect_examples": 4,
+  "output": "results/resnet50_finetune/qualitative_examples.png"
+}

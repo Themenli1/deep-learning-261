@@ -50,3 +50,18 @@ assignment1/report/report.zip
 Thumbs.db
 .idea/
 .vscode/
+
+# LaTeX build artifacts (A2 report/slides)
+assignment2/report/build*/
+assignment2/report/*.aux
+assignment2/report/*.log
+assignment2/report/*.toc
+assignment2/report/*.out
+assignment2/report/*.nav
+assignment2/report/*.snm
+assignment2/report/*.vrb
+assignment2/report/*.fdb_latexmk
+assignment2/report/*.fls
+assignment2/report/*.lof
+assignment2/report/*.lot
+assignment2/report/*.synctex.gz

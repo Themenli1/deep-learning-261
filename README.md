@@ -3,7 +3,7 @@
 Course project for Semester 261 at Ho Chi Minh City University of Technology,
 VNU-HCM, Faculty of Computer Science and Engineering.
 
-## Group 99 — PTQ
+## Group 99 — PTQ (choco)
 
 | Name | Student ID | GitHub |
 |---|---|---|
@@ -20,12 +20,14 @@ Assignment 1.
 | Assignment | Status | Milestone |
 |---|---|---|
 | Assignment 1 | Five model families benchmarked | 20 Oct 2026 |
-| Assignment 2 | Planned | Proposal — 7 Oct 2026 |
+| Assignment 2 | Food-101: three adaptation regimes plus a matched frozen control | M3 Final — 11 Nov 2026 |
 | Assignment 3 | Planned | Proposal — 18 Nov 2026 |
 
 - [Assignment 1 report](docs/assignment1.md)
 - [Assignment 1 experiment protocol](docs/assignment1-experiment-protocol.md)
 - [Assignment 1 reproduction commands](assignment1/README.md)
+- [Assignment 2 report](docs/assignment2.md)
+- [Assignment 2 reproduction and checkpoints](assignment2/CHECKPOINTS.md)
 - [AI usage log](AI_USAGE.md)
 - [GitHub Pages](https://tapstoptap.github.io/deep-learning-261/)
 
@@ -53,6 +55,14 @@ assignment1/
 ├── tests/            # unit tests
 ├── results/          # EDA and portable benchmark artifacts
 └── README.md         # exact reproduction commands
+
+assignment2/
+├── configs/          # baseline, frozen, fine-tune and ablation configs
+├── proposal/         # approved Food-101 dataset proposal
+├── src/              # data, models, training, evaluation, EDA, benchmarks
+├── results/          # histories, metrics, curves, EDA artifacts
+├── CHECKPOINTS.md    # reconstruction contract and expected metrics
+└── README.md         # A2 overview and commands
 
 docs/                 # GitHub Pages and reports
 environment/          # benchmark environment
