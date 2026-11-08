@@ -48,3 +48,23 @@ NVIDIA GeForce RTX 4050 Laptop GPU
 - CUDA synchronization around every timed forward pass.
 - Training time can be affected by normal laptop activity; predictive metrics
   are deterministic for a fixed seed and configuration.
+
+## Assignment 2 training environment
+
+Assignment 2 used Kaggle GPU notebooks rather than the Assignment 1 laptop
+environment:
+
+- GPU: Tesla T4 for E1/E2; Tesla P100 for E3.
+- Framework: PyTorch 2.x + torchvision on the Kaggle image.
+- Seed: 42 for the data split, initialization, and training.
+- Input: 224 × 224 RGB; official 25,250-image test split.
+- Exact Kaggle package versions were not included in the exported run logs.
+  Capture them on a reconstruction run with:
+
+```bash
+python -c "import torch, torchvision; print(torch.__version__, torchvision.__version__)"
+```
+
+The local analysis/plot environment is Python 3.12.5 with PyTorch 2.5.1+cpu and
+torchvision 0.20.1+cpu. Assignment 2 reconstruction commands and expected
+metrics are in `assignment2/CHECKPOINTS.md`.

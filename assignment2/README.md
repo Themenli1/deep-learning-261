@@ -1,12 +1,32 @@
 # Assignment 2 — Deep Learning on Large-Scale Data and Specialized Tasks
 
+**Status:** Completed — M3 Final (11 Nov 2026).
+
 ## Task track
 - **Track:** Multi-class Image Classification
 - **Dataset:** Food-101 (101 food categories, 101,000 images)
 
 ## Dataset proposal
 See [`proposal/dataset_proposal.md`](proposal/dataset_proposal.md).  
-- **Status:** Approved / In progress
+- **Approval status:** Approved (course dataset-proposal workflow; group record).
+- **Approval record:** maintained with the group's course-workflow records.
+
+## Deliverables
+- [Report PDF](report/CHOCO_A2_Report.pdf) ([LaTeX source](report/CHOCO_A2_Report.tex))
+- [Slides PDF](report/CHOCO_A2_Slides.pdf) ([LaTeX source](report/CHOCO_A2_Slides.tex))
+- [Checkpoint and reconstruction instructions](CHECKPOINTS.md)
+- [Presentation script](report/video_script.md)
+- [Assignment page](../docs/assignment2.md)
+
+The presentation video is recorded from the slides and script and published on YouTube (unlisted): <https://youtu.be/xfPd0ZnpQYE>.
+
+### Rebuilding the PDFs
+```bash
+cd report
+mkdir -p build build_slides
+pdflatex -output-directory=build CHOCO_A2_Report.tex   # run twice (TOC)
+pdflatex -output-directory=build_slides CHOCO_A2_Slides.tex   # run twice (title overlay)
+```
 
 ## Setup
 ```bash
@@ -66,4 +86,23 @@ python src/evaluate.py --config configs/pretrained.yaml --checkpoint checkpoints
 |---|---|---|---|---:|---:|---:|
 | Simple CNN (Scratch) | `configs/baseline.yaml` | Completed (20 ep, 163m) | `checkpoints/baseline/simple_cnn_best.pt` | 46.38% | 51.96% | 51.21% |
 | ResNet-50 (Frozen Backbone) | `configs/pretrained_frozen.yaml` | Completed (15 ep, 150m) | `checkpoints/resnet50_frozen/resnet50_best.pt` | 61.55% | 66.70% | 66.36% |
+| ResNet-50 (Frozen, E3 protocol) | `configs/ablation_frozen_e3proto.yaml` | Completed (15 ep, 108m) | `checkpoints/ablation_frozen_e3proto/resnet50_best.pt` | 56.61% | 61.71% | 60.88% |
 | ResNet-50 (Full Fine-tuned) | `configs/pretrained.yaml` | Completed (15 ep, 269m) | `checkpoints/resnet50_finetune/resnet50_best.pt` | **81.45%** | **86.17%** | **86.10%** |
+
+Checkpoint binaries are excluded from Git. The table records the paths expected by the evaluation commands; [`CHECKPOINTS.md`](CHECKPOINTS.md) gives the exact reconstruction procedure and the expected metrics for each run. Checkpoint selection is by **best validation macro-F1**.
+
+### Strict frozen-vs-unfrozen ablation (A0)
+The reported E2/E3 comparison also changes optimizer, learning rate, batch size, and GPU. A0 is the matched control: the frozen backbone trained with the E3 protocol, so A0 and E3 differ only in `freeze_backbone`.
+
+```bash
+python src/train.py --config configs/ablation_frozen_e3proto.yaml
+python src/evaluate.py --config configs/ablation_frozen_e3proto.yaml   --checkpoint checkpoints/ablation_frozen_e3proto/resnet50_best.pt --split test
+```
+
+Under the matched protocol, unfreezing is worth +24.46 accuracy points (61.71% → 86.17%); the protocol switch alone costs the frozen model 4.99 points.
+
+## Environment
+- Training: Kaggle Tesla T4 (E1/E2), Tesla P100 (E3), and Colab for A0 (GPU model not logged), PyTorch 2.x + torchvision.
+- Analysis/plots: Python 3.12.5, PyTorch 2.5.1+cpu, torchvision 0.20.1+cpu.
+- Seeds: 42 for data splitting, model initialization, and training.
+- The instrumented Kaggle session (benchmark + qualitative grid) reported torch 2.11.0+cu128 / torchvision 0.26.0+cu128 / CUDA 12.8 / cuDNN 91900 / Python 3.13.15 on a Tesla T4. The builds used for E1–E3 were not logged; capture them with `python -c "import torch, torchvision; print(torch.__version__, torchvision.__version__)"` when reconstructing the runs.

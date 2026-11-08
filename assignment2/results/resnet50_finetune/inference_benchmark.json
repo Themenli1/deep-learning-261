@@ -1,0 +1,11 @@
+{
+  "device": "cuda",
+  "batch_size": 32,
+  "samples": 640,
+  "elapsed_sec": 2.863872702997469,
+  "latency_ms_per_batch": 143.19363514987344,
+  "throughput_images_per_sec": 223.47361994481975,
+  "peak_allocated_vram_mb": 530.15234375,
+  "checkpoint": "checkpoints/resnet50_finetune/resnet50_best.pt",
+  "split": "test"
+}

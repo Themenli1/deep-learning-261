@@ -1,5 +1,11 @@
 # Dataset Proposal — Assignment 2
 
+## 0. Approval status
+
+**Status:** Approved.
+
+**Record:** approval was handled through the course dataset-proposal workflow and is kept with the group's course records. The approved scope is the full Food-101 dataset with the split, metrics, baseline, and compute plan below; no permanent subset is used for the final results.
+
 ## 1. Dataset name / source / version / license
 
 **Dataset name:** Food-101
