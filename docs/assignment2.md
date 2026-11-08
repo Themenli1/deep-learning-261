@@ -13,6 +13,10 @@ title: Assignment 2
 - Nguyen Minh Quang (2453052)
 **Instructor:** Lê Thành Sách
 
+<div style="max-width: 900px; margin: 1rem 0 2rem;">
+<iframe width="100%" height="500" src="https://www.youtube.com/embed/xfPd0ZnpQYE" title="Assignment 2 presentation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
 ---
 
 ## 1. Problem Statement
@@ -257,10 +261,6 @@ The checkpoints are within 1.3% of each other and use the same memory, as expect
 - **Slides:** [`CHOCO_A2_Slides.pdf`](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/report/CHOCO_A2_Slides.pdf) ([LaTeX source](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/report/CHOCO_A2_Slides.tex))
 - **Checkpoints / Reconstruction:** [`assignment2/CHECKPOINTS.md`](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/CHECKPOINTS.md)
 - **Presentation video:** [YouTube](https://youtu.be/xfPd0ZnpQYE) (unlisted) · [script](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/report/video_script.md)
-
-<div style="max-width: 900px; margin: 1rem 0 2rem;">
-<iframe width="100%" height="500" src="https://www.youtube.com/embed/xfPd0ZnpQYE" title="Assignment 2 presentation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-</div>
 
 ---
 
