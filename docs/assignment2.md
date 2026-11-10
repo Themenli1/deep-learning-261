@@ -260,8 +260,8 @@ The checkpoints are within 1.3% of each other and use the same memory, as expect
 ## 10. Links & Deliverables
 - **Dataset Proposal:** [`assignment2/proposal/dataset_proposal.md`](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/proposal/dataset_proposal.md)
 - **Source Code Repository:** [`assignment2/`](https://github.com/tapstoptap/deep-learning-261/tree/main/assignment2)
-- **Report PDF:** [`CHOCO_A2_Report.pdf`](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/report/CHOCO_A2_Report.pdf) ([LaTeX source](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/report/CHOCO_A2_Report.tex))
-- **Slides:** [`CHOCO_A2_Slides.pdf`](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/report/CHOCO_A2_Slides.pdf) ([LaTeX source](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/report/CHOCO_A2_Slides.tex))
+- **Report PDF:** [`CHOCO_A2_Report.pdf`](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/report/CHOCO_A2_Report.pdf)
+- **Slides:** [`CHOCO_A2_Slides.pdf`](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/report/CHOCO_A2_Slides.pdf)
 - **Checkpoints / Reconstruction:** [`assignment2/CHECKPOINTS.md`](https://github.com/tapstoptap/deep-learning-261/blob/main/assignment2/CHECKPOINTS.md)
 - **Presentation video:** [YouTube](https://youtu.be/xfPd0ZnpQYE) (unlisted)
 

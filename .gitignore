@@ -39,6 +39,10 @@ assignment1/results_norm_test/
 assignment1/report/DL_ASS1/
 assignment1/report/slide/
 assignment1/report/report.zip
+assignment2/report/CHOCO_A2_Report.tex
+assignment2/report/CHOCO_A2_Slides.tex
+assignment2/report/video_script.md
+assignment2/report/video_script.pdf
 
 # Secrets
 .env

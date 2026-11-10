@@ -12,22 +12,15 @@ See [`proposal/dataset_proposal.md`](proposal/dataset_proposal.md).
 - **Approval record:** maintained with the group's course-workflow records.
 
 ## Deliverables
-- [Report PDF](report/CHOCO_A2_Report.pdf) ([LaTeX source](report/CHOCO_A2_Report.tex))
-- [Slides PDF](report/CHOCO_A2_Slides.pdf) ([LaTeX source](report/CHOCO_A2_Slides.tex))
+- [Report PDF](report/CHOCO_A2_Report.pdf)
+- [Slides PDF](report/CHOCO_A2_Slides.pdf)
 - [Checkpoint and reconstruction instructions](CHECKPOINTS.md)
 - [Assignment page](../docs/assignment2.md)
 
 The presentation video is recorded from the slides and published on YouTube (unlisted): <https://youtu.be/xfPd0ZnpQYE>.
 
-### Rebuilding the PDFs
-The tracked PDFs are built in place from `report/`, so the output paths referenced elsewhere in this file stay valid:
-```bash
-cd report
-latexmk -pdf -interaction=nonstopmode CHOCO_A2_Report.tex   # rewrites CHOCO_A2_Report.pdf
-latexmk -pdf -interaction=nonstopmode CHOCO_A2_Slides.tex   # rewrites CHOCO_A2_Slides.pdf
-latexmk -c CHOCO_A2_Report.tex CHOCO_A2_Slides.tex           # remove .aux/.log/.toc/... afterwards
-```
-If `latexmk` is unavailable, run `pdflatex -interaction=nonstopmode <file>.tex` twice per document (TOC and title overlay). Check the log for `Overfull \hbox` and `Missing character` before publishing. The build needs `results/` figures and `assets/` images to be present relative to `report/`.
+### Report sources
+Only the exported PDFs are tracked, as in Assignment 1. The LaTeX sources are kept in the local working copy and are not part of the repository, so there is nothing to rebuild from a fresh clone.
 
 ## Setup
 ```bash
