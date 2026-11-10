@@ -247,6 +247,14 @@ def train(args: argparse.Namespace) -> None:
     out_cfg = config.get("output", {})
     ckpt_dir = Path(args.checkpoint_dir or out_cfg.get("checkpoint_dir", "checkpoints"))
     res_dir = Path(args.result_dir or out_cfg.get("result_dir", "results"))
+    if args.smoke_test:
+        # Keep smoke runs away from the official run directories so they can
+        # never overwrite a real checkpoint or its history/summary artifacts.
+        if args.checkpoint_dir is None:
+            ckpt_dir = ckpt_dir.parent / f"{ckpt_dir.name}_smoke"
+        if args.result_dir is None:
+            res_dir = res_dir.parent / f"{res_dir.name}_smoke"
+        print(f"Smoke test: writing to {ckpt_dir} and {res_dir}")
     if not ckpt_dir.is_absolute():
         ckpt_dir = assignment_root / ckpt_dir
     if not res_dir.is_absolute():

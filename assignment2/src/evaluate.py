@@ -97,6 +97,14 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
         val_ratio = data_cfg.get("val_ratio", 0.1)
         seed = config.get("seed", 42)
         _, samples = stratified_split(all_train, val_ratio=val_ratio, seed=seed)
+    elif args.split == "train":
+        # Use the project training split only: exclude the same held-out
+        # validation subset that training used, so the result is not reported
+        # on all 75,750 official training images.
+        all_train = load_split(root_data_path, "train", class_to_idx)
+        val_ratio = data_cfg.get("val_ratio", 0.1)
+        seed = config.get("seed", 42)
+        samples, _ = stratified_split(all_train, val_ratio=val_ratio, seed=seed)
     else:
         samples = load_split(root_data_path, args.split, class_to_idx)
 
@@ -125,6 +133,21 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
 
     print(f"Loading weights from checkpoint: {ckpt_path}")
     checkpoint_data = torch.load(ckpt_path, map_location=device, weights_only=False)
+    ckpt_cfg = checkpoint_data.get("config", {}) if isinstance(checkpoint_data, dict) else {}
+    if ckpt_cfg:
+        ckpt_model_cfg = ckpt_cfg.get("model", {})
+        for key in ("name", "freeze_backbone"):
+            if key in ckpt_model_cfg and ckpt_model_cfg[key] != model_cfg.get(key):
+                print(
+                    f"WARNING: checkpoint model.{key}={ckpt_model_cfg[key]!r} "
+                    f"differs from passed config ({model_cfg.get(key)!r})."
+                )
+        if "seed" in ckpt_cfg and ckpt_cfg.get("seed") != config.get("seed"):
+            print(
+                f"WARNING: checkpoint seed={ckpt_cfg.get('seed')!r} differs from "
+                f"passed config seed ({config.get('seed')!r}); the validation "
+                "split may not match the one used during training."
+            )
     state_dict = checkpoint_data.get("model_state_dict", checkpoint_data)
     model.load_state_dict(state_dict)
     model.eval()
