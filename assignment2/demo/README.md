@@ -38,7 +38,8 @@ note instead of the second panel.
 ```bash
 pip install -r requirements.txt
 streamlit run streamlit_app.py   # http://127.0.0.1:8501
-# or the Gradio version:
+# or the Gradio version (needs gradio installed separately):
+pip install "gradio>=5.0"
 python app.py                    # http://127.0.0.1:7860
 ```
 
