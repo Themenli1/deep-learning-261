@@ -100,7 +100,7 @@ We compare three adaptation regimes plus a matched frozen control (A0) under a s
 
 3. **E3 — ResNet-50 Full Fine-Tuning (End-to-End Adaptation):**
    - Backbone: ResNet-50 initialized from ImageNet-1k weights.
-   - All 23,714,981 parameters are **unfrozen** and fine-tuned end-to-end at a calibrated learning rate ($\eta = 10^{-4}$) with AdamW; the config specifies cosine annealing, while the saved history logs a constant rate (see Limitations).
+   - All 23,714,981 parameters are **unfrozen** and fine-tuned end-to-end at a calibrated learning rate ($\eta = 10^{-4}$) with AdamW; the config specifies cosine annealing, confirmed by the exported Kaggle run, while the saved history logs a constant rate (a curation artifact; see Limitations).
 
 4. **A0 — Matched-control Frozen ResNet-50:**
    - Same frozen backbone and head as E2 (206,949 trainable parameters).
@@ -133,7 +133,7 @@ The instrumented Kaggle session that produced the inference benchmark and the qu
 | E1 | A scratch CNN provides a lower-bound reference. | Architecture and random initialization. | Data split, input size, seed, weight decay, metric set. | Report accuracy and macro-F1; no superiority claim. |
 | E2 | Frozen ImageNet features improve over the scratch reference. | Architecture and pretrained initialization. | Data split, input size, seed, weight decay, metric set. | Higher test accuracy and macro-F1 than E1; report parameter count. |
 | E3 | Full fine-tuning improves over the frozen backbone. | Unfreezing, optimizer, learning rate, batch size, GPU. | Data split, input size, seed, weight decay, metric set, epoch count (15). | Higher test accuracy and macro-F1 than E2, with the protocol confound stated. |
-| A0 | The E2→E3 gap is not an artefact of the protocol switch. | Vs. E2: optimizer, learning rate, batch size, GPU. | Data split, input size, seed, weight decay, metric set, epoch count (15), frozen backbone. | Frozen baseline under the E3 protocol; in the two recorded runs E3 exceeds A0 by 24.46 accuracy points (A0 ran on an unlogged Colab GPU and its effective LR schedule is not verifiable, so the gap is descriptive). |
+| A0 | The E2→E3 gap is not an artefact of the protocol switch. | Vs. E2: optimizer, learning rate, batch size, GPU. | Data split, input size, seed, weight decay, metric set, epoch count (15), frozen backbone. | Frozen baseline under the E3 protocol; in the two recorded runs E3 exceeds A0 by 24.46 accuracy points (A0 ran on an unlogged Colab GPU, so the gap is descriptive). |
 
 ---
 
