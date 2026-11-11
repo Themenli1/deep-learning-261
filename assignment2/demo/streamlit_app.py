@@ -29,6 +29,9 @@ CLASSES: list[str] = json.loads((BASE_DIR / "food101_classes.json").read_text(en
 NUM_CLASSES = len(CLASSES)
 
 HF_CKPT_REPO = os.environ.get("HF_CKPT_REPO", "Themenli/food101-demo-checkpoints")
+# The checkpoints currently live in a public HF *Space* (repo_type="space");
+# if you later move them to a proper HF *model* repo, set HF_CKPT_REPO_TYPE=model.
+HF_CKPT_REPO_TYPE = os.environ.get("HF_CKPT_REPO_TYPE", "space")
 
 MODEL_INFO = {
     "e3": {
@@ -73,7 +76,7 @@ def resolve_ckpt(filename: str) -> str | None:
     if local.exists():
         return str(local)
     try:
-        return hf_hub_download(HF_CKPT_REPO, filename)
+        return hf_hub_download(HF_CKPT_REPO, filename, repo_type=HF_CKPT_REPO_TYPE)
     except Exception:
         return None
 
