@@ -94,7 +94,7 @@ python src/train.py --config configs/ablation_frozen_e3proto.yaml
 python src/evaluate.py --config configs/ablation_frozen_e3proto.yaml   --checkpoint checkpoints/ablation_frozen_e3proto/resnet50_best.pt --split test
 ```
 
-Under the matched protocol, the observed A0→E3 gap is +24.46 accuracy points (61.71% → 86.17%); the protocol switch coincides with a 4.99-point drop for the frozen model.
+Under the matched protocol, E3 exceeds A0 by +24.46 accuracy points (86.17% vs. 61.71%) in the two recorded runs; the protocol switch coincides with a 4.99-point drop for the frozen model.
 
 ## Environment
 - Training: Kaggle Tesla T4 (E1/E2), Tesla P100 (E3), and Colab for A0 (GPU model not logged), PyTorch 2.x + torchvision.

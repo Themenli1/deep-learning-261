@@ -90,6 +90,58 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     image_size = data_cfg.get("image_size", 224)
     _, eval_transform = get_transforms(image_size=image_size, normalize=True)
 
+    # Load the checkpoint BEFORE computing the split: the train/val split is
+    # derived from seed + val_ratio, so any config drift must abort the run
+    # before the (potentially wrong) split is built.
+    ckpt_path = Path(args.checkpoint)
+    if not ckpt_path.is_absolute():
+        ckpt_path = assignment_root / ckpt_path
+
+    if not ckpt_path.exists():
+        raise FileNotFoundError(f"Checkpoint not found at: {ckpt_path}")
+
+    print(f"Loading weights from checkpoint: {ckpt_path}")
+    checkpoint_data = torch.load(ckpt_path, map_location=device, weights_only=False)
+    ckpt_cfg = checkpoint_data.get("config", {}) if isinstance(checkpoint_data, dict) else {}
+
+    mismatches: list[str] = []
+    ckpt_model_cfg = ckpt_cfg.get("model", {})
+    model_cfg = config.get("model", {})
+    for key in ("name", "freeze_backbone"):
+        if key in ckpt_model_cfg and ckpt_model_cfg[key] != model_cfg.get(key):
+            mismatches.append(
+                f"model.{key}: checkpoint={ckpt_model_cfg[key]!r} "
+                f"vs config={model_cfg.get(key)!r}"
+            )
+    if args.split in ("train", "val"):
+        # seed and val_ratio determine the stratified train/val split; a
+        # mismatch here silently evaluates on a different split than the
+        # checkpoint was trained on.
+        ckpt_data_cfg = ckpt_cfg.get("data", {})
+        if "seed" in ckpt_cfg and ckpt_cfg.get("seed") != config.get("seed"):
+            mismatches.append(
+                f"seed: checkpoint={ckpt_cfg.get('seed')!r} "
+                f"vs config={config.get('seed')!r}"
+            )
+        ckpt_val_ratio = ckpt_data_cfg.get("val_ratio")
+        if ckpt_val_ratio is not None and ckpt_val_ratio != data_cfg.get("val_ratio"):
+            mismatches.append(
+                f"data.val_ratio: checkpoint={ckpt_val_ratio!r} "
+                f"vs config={data_cfg.get('val_ratio')!r}"
+            )
+
+    if mismatches and not args.allow_config_mismatch:
+        print("ERROR: checkpoint config does not match the passed config:")
+        for m in mismatches:
+            print(f"  - {m}")
+        print(
+            "Refusing to evaluate. Re-run with the config used for training, "
+            "or pass --allow-config-mismatch to override."
+        )
+        sys.exit(2)
+    for m in mismatches:
+        print(f"WARNING: config mismatch ignored (--allow-config-mismatch): {m}")
+
     if args.split == "test":
         samples = load_split(root_data_path, "test", class_to_idx)
     elif args.split == "val":
@@ -119,35 +171,9 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     )
 
     # Model
-    model_cfg = config.get("model", {})
     model_cfg["num_classes"] = len(classes)
     model = create_model(model_cfg).to(device)
 
-    # Load checkpoint
-    ckpt_path = Path(args.checkpoint)
-    if not ckpt_path.is_absolute():
-        ckpt_path = assignment_root / ckpt_path
-
-    if not ckpt_path.exists():
-        raise FileNotFoundError(f"Checkpoint not found at: {ckpt_path}")
-
-    print(f"Loading weights from checkpoint: {ckpt_path}")
-    checkpoint_data = torch.load(ckpt_path, map_location=device, weights_only=False)
-    ckpt_cfg = checkpoint_data.get("config", {}) if isinstance(checkpoint_data, dict) else {}
-    if ckpt_cfg:
-        ckpt_model_cfg = ckpt_cfg.get("model", {})
-        for key in ("name", "freeze_backbone"):
-            if key in ckpt_model_cfg and ckpt_model_cfg[key] != model_cfg.get(key):
-                print(
-                    f"WARNING: checkpoint model.{key}={ckpt_model_cfg[key]!r} "
-                    f"differs from passed config ({model_cfg.get(key)!r})."
-                )
-        if "seed" in ckpt_cfg and ckpt_cfg.get("seed") != config.get("seed"):
-            print(
-                f"WARNING: checkpoint seed={ckpt_cfg.get('seed')!r} differs from "
-                f"passed config seed ({config.get('seed')!r}); the validation "
-                "split may not match the one used during training."
-            )
     state_dict = checkpoint_data.get("model_state_dict", checkpoint_data)
     model.load_state_dict(state_dict)
     model.eval()
@@ -236,6 +262,12 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=None, help="Batch size")
     parser.add_argument("--num-workers", type=int, default=0, help="Number of dataloader workers")
     parser.add_argument("--top-k-confusions", type=int, default=10, help="Number of top confused pairs to report")
+    parser.add_argument(
+        "--allow-config-mismatch",
+        action="store_true",
+        help="Evaluate even if the checkpoint config differs from the passed config "
+        "(seed/val_ratio affect the train/val split; model settings affect the architecture)",
+    )
     args = parser.parse_args()
 
     evaluate(args)

@@ -43,6 +43,21 @@ assignment2/report/CHOCO_A2_Report.tex
 assignment2/report/CHOCO_A2_Slides.tex
 assignment2/report/video_script.md
 assignment2/report/video_script.pdf
+# Local copy of docs/assets/a2 used only to compile the report PDF
+assignment2/report/a2/
+
+# LaTeX build artifacts
+assignment2/report/*.aux
+assignment2/report/*.fls
+assignment2/report/*.fdb_latexmk
+assignment2/report/*.log
+assignment2/report/*.out
+assignment2/report/*.toc
+assignment2/report/*.lof
+assignment2/report/*.lot
+assignment2/report/*.nav
+assignment2/report/*.snm
+assignment2/report/*.synctex.gz
 
 # Secrets
 .env

@@ -133,7 +133,7 @@ The instrumented Kaggle session that produced the inference benchmark and the qu
 | E1 | A scratch CNN provides a lower-bound reference. | Architecture and random initialization. | Data split, input size, seed, weight decay, metric set. | Report accuracy and macro-F1; no superiority claim. |
 | E2 | Frozen ImageNet features improve over the scratch reference. | Architecture and pretrained initialization. | Data split, input size, seed, weight decay, metric set. | Higher test accuracy and macro-F1 than E1; report parameter count. |
 | E3 | Full fine-tuning improves over the frozen backbone. | Unfreezing, optimizer, learning rate, batch size, GPU. | Data split, input size, seed, weight decay, metric set, epoch count (15). | Higher test accuracy and macro-F1 than E2, with the protocol confound stated. |
-| A0 | The E2→E3 gap is not an artefact of the protocol switch. | Vs. E2: optimizer, learning rate, batch size, GPU. | Data split, input size, seed, weight decay, metric set, epoch count (15), frozen backbone. | Frozen baseline under the E3 protocol; A0→E3 is the matched comparison for unfreezing (only `freeze_backbone` differs). |
+| A0 | The E2→E3 gap is not an artefact of the protocol switch. | Vs. E2: optimizer, learning rate, batch size, GPU. | Data split, input size, seed, weight decay, metric set, epoch count (15), frozen backbone. | Frozen baseline under the E3 protocol; in the two recorded runs E3 exceeds A0 by 24.46 accuracy points (A0 ran on an unlogged Colab GPU and its effective LR schedule is not verifiable, so the gap is descriptive). |
 
 ---
 
@@ -187,7 +187,7 @@ Training time is wall-clock time on the listed GPU. E1/E2 ran on a Tesla T4, E3 
    - The fine-tuning protocol improves accuracy by **+19.47 pp** (from 66.70% to 86.17%).
    - Because unfreezing is bundled with a different optimizer, learning rate, batch size, and GPU, this gap alone is descriptive.
 3. **Matched-protocol control (E3 vs A0):**
-   - Under the E3 protocol, the observed gap between the frozen A0 and fine-tuned E3 is **+24.46 pp** of accuracy (61.71% → 86.17%) and **+25.22 pp** of macro-F1 (60.88% → 86.10%).
+   - In the two recorded runs under the E3 protocol, E3 exceeds the frozen A0 by **+24.46 pp** of accuracy (86.17% vs. 61.71%) and **+25.22 pp** of macro-F1 (86.10% vs. 60.88%).
    - In these runs the protocol switch coincides with a 4.99-point drop for the frozen model (66.70% vs 61.71%), so the naive +19.47 gap understates the observed E3−A0 difference.
 4. **Accuracy vs. compute trade-off:**
    - E2 delivers 66.7% on 101 classes in about 2.5 hours on a T4.
