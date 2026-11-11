@@ -111,7 +111,7 @@ def main() -> None:
             if "e2" in MODELS:
                 e2_out = gr.Label(
                     num_top_classes=6,
-                    label="ResNet-50 frozen backbone (E2) · test Macro-F1 61.55%, accuracy 66.70%",
+                    label="ResNet-50 frozen backbone (E2) · test Macro-F1 66.36%, accuracy 66.70%",
                 )
                 btn.click(fn=predict_both, inputs=inp, outputs=[e3_out, e2_out])
             else:

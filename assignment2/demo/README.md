@@ -2,7 +2,7 @@
 
 Web demo for Assignment 2: upload a food photo and compare the two ResNet-50
 checkpoints side by side — E3 (full fine-tune, test Macro-F1 86.10% /
-accuracy 86.17%) and E2 (frozen backbone, test Macro-F1 61.55% / accuracy
+accuracy 86.17%) and E2 (frozen backbone, test Macro-F1 66.36% / accuracy
 66.70%). Both predict one of the 101 Food-101 classes; the app shows the top-6
 probabilities for each model.
 

@@ -42,7 +42,7 @@ MODEL_INFO = {
     "e2": {
         "file": "e2_resnet50_frozen_best.pt",
         "title": "ResNet-50 frozen backbone (E2)",
-        "metrics": "test Macro-F1 61.55%, accuracy 66.70%",
+        "metrics": "test Macro-F1 66.36%, accuracy 66.70%",
     },
 }
 
