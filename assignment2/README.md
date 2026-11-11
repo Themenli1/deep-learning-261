@@ -15,12 +15,16 @@ See [`proposal/dataset_proposal.md`](proposal/dataset_proposal.md).
 - [Report PDF](report/CHOCO_A2_Report.pdf)
 - [Slides PDF](report/CHOCO_A2_Slides.pdf)
 - [Checkpoint and reconstruction instructions](CHECKPOINTS.md)
+- [Interactive web demo (Streamlit)](demo/README.md)
 - [Assignment page](../docs/assignment2.md)
 
 The presentation video is recorded from the slides and published on YouTube (unlisted): <https://youtu.be/xfPd0ZnpQYE>.
 
 ### Report sources
 Only the exported PDFs are tracked, as in Assignment 1. The LaTeX sources are kept in the local working copy and are not part of the repository, so there is nothing to rebuild from a fresh clone.
+
+## Interactive demo
+[`demo/`](demo/README.md) is a Streamlit web app that loads the E3 (full fine-tune) and E2 (frozen backbone) checkpoints side by side: upload a food photo or pick a built-in Food-101 example, and each model shows its top-6 class probabilities on CPU. It reuses the exact evaluation transform and the same `.pt` checkpoints, so its outputs match the recorded test behaviour. Run locally with `streamlit run demo/streamlit_app.py`; deployment notes (Streamlit Cloud + a free Hugging Face checkpoint host) are in [`demo/README.md`](demo/README.md).
 
 ## Setup
 ```bash
